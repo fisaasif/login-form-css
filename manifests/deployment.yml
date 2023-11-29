@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: fisaasifloginformcss 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fisaasifloginformcss
+  template:
+    metadata:
+      labels:
+        app: fisaasifloginformcss 
+    spec:
+      containers:
+        - name: fisaasifloginformcss 
+          image: prod1.azurecr.io/fisaasifloginformcss
+          ports:
+          - containerPort: 80
