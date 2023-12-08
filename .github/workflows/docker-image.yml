@@ -68,4 +68,4 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Scan Docker image with Trivy
-        run: trivy ${{ needs.build-and-push.outputs.registry }}/asiftest01:login_demo_image
+        run: trivy "${{ needs.build-and-push.outputs.registry }}/asiftest01:login_demo_image"
