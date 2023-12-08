@@ -56,16 +56,5 @@ jobs:
           wget https://github.com/aquasecurity/trivy/releases/tag/v0.48.0/trivy_$(uname -m) -O /usr/local/bin/trivy
           chmod +x /usr/local/bin/trivy
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Scan Docker image with Trivy
         run: trivy "${{ needs.build-and-push.outputs.registry }}/asiftest01:login_demo_image"
