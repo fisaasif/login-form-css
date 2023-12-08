@@ -37,5 +37,3 @@ This workflow uses the following GitHub repository secrets:
 
 - Adjust the Dockerfile path or contents as needed.
 - Modify the ECR repository name (`ECR_REPOSITORY`) and Docker image tag (`IMAGE_TAG`) in the workflow file.
-
-Feel free to customize this workflow based on your project requirements.
