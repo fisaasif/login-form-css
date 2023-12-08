@@ -54,6 +54,7 @@ jobs:
       - name: Download Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/tag/v0.48.0/trivy_$(uname -m) -O /usr/local/bin/trivy
+          tar zxvf trivy_0.48.0_Linux-64bit.tar.gz
           chmod +x /usr/local/bin/trivy
 
       - name: Configure AWS credentials
@@ -68,5 +69,4 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Scan Docker image with Trivy
-        run: |
-          trivy "docker://${{ steps.build-and-push.outputs.registry }}/asiftest01:login_demo_image"
+        run: trivy ${{ needs.build-and-push.outputs.registry }}/asiftest01:login_demo_image
