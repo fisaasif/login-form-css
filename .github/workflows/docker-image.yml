@@ -56,6 +56,11 @@ jobs:
           wget https://github.com/aquasecurity/trivy/releases/download/v0.19.1/trivy_0.19.1_Linux-64bit.tar.gz
           tar zxvf trivy_0.19.1_Linux-64bit.tar.gz
           sudo mv trivy /usr/local/bin/trivy
+      - name: Debug
+        run: |
+          echo "AWS_REGION: $AWS_REGION"
+          echo "ECR_REGISTRY: $ECR_REGISTRY"
+          docker info
 
       - name: Scan Docker image with Trivy
         run: trivy ${{ needs.build-and-push.outputs.registry }}/asiftest01:login_demo_image
