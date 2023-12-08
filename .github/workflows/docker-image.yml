@@ -53,7 +53,7 @@ jobs:
 
       - name: Download Trivy
         run: |
-          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_$(uname -m) -O /usr/local/bin/trivy
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_$(uname -m) -O /usr/local/bin/trivy
           chmod +x /usr/local/bin/trivy
 
       - name: Scan Docker image with Trivy
