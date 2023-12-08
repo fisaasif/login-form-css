@@ -54,7 +54,6 @@ jobs:
       - name: Download Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/tag/v0.48.0/trivy_$(uname -m) -O /usr/local/bin/trivy
-          tar zxvf trivy_0.48.0_Linux-64bit.tar.gz
           chmod +x /usr/local/bin/trivy
 
       - name: Configure AWS credentials
