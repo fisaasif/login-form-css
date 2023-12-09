@@ -44,29 +44,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image"
+          image-ref: '962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image'
+          security-checks: 'vuln,secret,config'
           format: 'sarif'
           output: 'trivy-results.sarif'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
-          checkout_path: /home/runner/work/login-form-css/login-form-css
-          token: ${{ secrets.GITHUB_TOKEN }}
-          matrix: '{}'
-          wait-for-processing: true
-
-      - name: Send Email Notification
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: ${{ secrets.SMTP_SERVER_ADDRESS }}
-          server_port: ${{ secrets.SMTP_SERVER_PORT }}
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: 'Docker Image Upload Status'
-          to: mohammedashifc@gmail.com
-          from: GITHUB ACTIONS
-          body: |
-            The Docker image upload was successful!
-            [Trivy Scan Results](./trivy-results.sarif)
+          severity: 'CRITICAL,HIGH'
