@@ -8,7 +8,7 @@ jobs:
     name: Build and Push Image
     runs-on: ubuntu-20.04
     env:
-      PAT: '${{ secrets.GITHUB_TOKEN }}'
+     PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,26 +31,30 @@ jobs:
         run: >-
           docker build -t ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image .
+
       - name: Tag Docker image
         run: >-
           docker tag ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image
+
       - name: Push Docker image to Amazon ECR
         run: >-
           docker push ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image
+      
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: >-
-            962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image
+          image-ref: '962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image'
           security-checks: 'vuln,secret,config'
-          format: sarif
-          output: trivy-results.sarif
+          format: 'sarif'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: trivy-results.sarif
-          category: image
+          sarif_file: 'trivy-results.sarif'
+          token: ${{ secrets.ACCESS_TOKEN }}
+          category: 'image'
