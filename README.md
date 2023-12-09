@@ -32,3 +32,8 @@ This GitHub Actions workflow automates the deployment of a Docker image to Amazo
 - **Recipient:** mohammedashifc@gmail.com
 - **Sender:** GITHUB ACTIONS
 - **Body:**
+
+- 
+## Important Note
+
+- Ensure that the necessary AWS permissions are granted for ECR operations.
