@@ -41,10 +41,7 @@ jobs:
       
       - name: Download Trivy
         run: >
-          wget
-          https://github.com/aquasecurity/trivy/releases/tag/latest/download/trivy_$(uname
-          -m) -O /usr/local/bin/trivy
-          chmod +x /usr/local/bin/trivy
+          sudo apt get install trivy
 
       - name: Authenticate Docker with ECR
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 962686842570.dkr.ecr.us-east-1.amazonaws.com
