@@ -67,7 +67,7 @@ jobs:
             - Commit SHA: ${{ github.sha }}
 
             **Scan Results:**
-            [Trivy Scan Results](./trivy-results.sarif)
+            - [Trivy Scan Results](./trivy-results.sarif)
 
             **Additional Information:**
             - Workflow Run ID: ${{ github.run_id }}
