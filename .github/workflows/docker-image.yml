@@ -42,7 +42,7 @@ jobs:
       - name: Download Trivy
         run: >
           wget
-          https://github.com/aquasecurity/trivy/releases/latest/download/trivy_$(uname
+          https://github.com/aquasecurity/trivy/releases/tag/latest/download/trivy_$(uname
           -m) -O /usr/local/bin/trivy
           chmod +x /usr/local/bin/trivy
 
