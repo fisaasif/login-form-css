@@ -1,39 +1,34 @@
-# AWS ECR Deployment Workflow
+# Deploy to AWS ECR with Image Scanning
 
-This GitHub Actions workflow automates the process of building a Docker image, tagging it, and pushing it to an Amazon Elastic Container Registry (ECR). The workflow is triggered on each push to the `main` branch.
+This GitHub Actions workflow automates the deployment of a Docker image to Amazon ECR with image scanning using Trivy. It also sends an email notification upon completion.
 
-## Workflow Overview
+## Workflow Description
 
-1. **Build Image:**
-   - Checks out the code from the repository.
-   - Configures AWS credentials using the [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) action.
-   - Caches Docker layers to speed up subsequent builds.
-   - Logs in to Amazon ECR using the [aws-actions/amazon-ecr-login](https://github.com/aws-actions/amazon-ecr-login) action.
+- **Trigger:** The workflow is triggered on pushes to the `main` branch.
+- **Steps:**
+  1. **Checkout Code:** Fetch the latest code.
+  2. **Configure AWS Credentials:** Set up AWS credentials for ECR access.
+  3. **Cache Docker Layers:** Cache Docker layers for faster builds.
+  4. **Login to Amazon ECR:** Authenticate Docker to the Amazon ECR registry.
+  5. **Build Docker Image:** Build the Docker image.
+  6. **Tag Docker Image:** Tag the Docker image.
+  7. **Push Docker Image to Amazon ECR:** Upload the Docker image to Amazon ECR.
+  8. **Run Trivy Vulnerability Scanner:** Scan the Docker image for vulnerabilities using Trivy.
+  9. **Send Email Notification:** Send an email notification with the workflow status and Trivy scan results.
 
-2. **Build, Tag, and Push Image to Amazon ECR:**
-   - Builds a Docker image using the Dockerfile in the repository.
-   - Tags the Docker image with the ECR repository URL and a specified image tag.
-   - Pushes the Docker image to the specified Amazon ECR repository.
+## Workflow Secrets
 
-## Prerequisites
+- `AWS_ACCESS_KEY_ID`: AWS Access Key ID with ECR permissions.
+- `AWS_SECRET_ACCESS_KEY`: AWS Secret Access Key corresponding to the access key.
+- `GITHUB_TOKEN`: GitHub token for repository access.
+- `SMTP_SERVER_ADDRESS`: SMTP server address for email notifications.
+- `SMTP_SERVER_PORT`: SMTP server port for email notifications.
+- `SMTP_USERNAME`: SMTP username for email notifications.
+- `SMTP_PASSWORD`: SMTP password for email notifications.
 
-- AWS Access Key ID and Secret Access Key with permissions to push images to the specified ECR repository. Set these as secrets in your GitHub repository with the names `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-- Dockerfile in the repository specifying the image build instructions.
+## Email Notification Details
 
-## Secrets
-
-This workflow uses the following GitHub repository secrets:
-
-- **AWS_ACCESS_KEY_ID:** The AWS access key ID for authentication.
-- **AWS_SECRET_ACCESS_KEY:** The AWS secret access key for authentication.
-
-## Usage
-
-1. Ensure your Dockerfile is configured correctly in your repository.
-2. Set the required secrets in the GitHub repository settings.
-3. Push changes to the `main` branch to trigger the workflow.
-
-## Customization
-
-- Adjust the Dockerfile path or contents as needed.
-- Modify the ECR repository name (`ECR_REPOSITORY`) and Docker image tag (`IMAGE_TAG`) in the workflow file.
+- **Subject:** Docker Image Upload Status
+- **Recipient:** mohammedashifc@gmail.com
+- **Sender:** GITHUB ACTIONS
+- **Body:**
