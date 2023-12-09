@@ -29,11 +29,13 @@ jobs:
         run: >-
           docker build -t ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image .
+
       - name: Tag Docker image
         run: >-
           docker tag ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image
+
       - name: Push Docker image to Amazon ECR
         run: >-
           docker push ${{ steps.login-ecr.outputs.registry
@@ -42,7 +44,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image:${{ github.sha }}"
+          image-ref: "962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image"
           format: 'sarif'
           output: 'trivy-results.sarif'
 
