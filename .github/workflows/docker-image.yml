@@ -8,63 +8,69 @@ jobs:
     name: Build and Push Image
     runs-on: ubuntu-20.04
     env:
-     PAT: ${{ secrets.GITHUB_TOKEN }}
+      PAT: '${{ secrets.GITHUB_TOKEN }}'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           aws-secret-access-key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           aws-region: us-east-1
-
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
           path: |
             ~/.docker
           key: '${{ runner.os }}-docker-${{ hashFiles(''**/Dockerfile'') }}'
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
       - name: Build Docker image
         run: >-
           docker build -t ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image .
-
       - name: Tag Docker image
         run: >-
           docker tag ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image
-
       - name: Push Docker image to Amazon ECR
         run: >-
           docker push ${{ steps.login-ecr.outputs.registry
           }}/asiftest01:login_demo_image
-      
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          image-ref: >-
+            962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image
+          format: sarif
+          output: trivy-results.sarif
           severity: 'CRITICAL,HIGH'
-
       - name: Send Email Notification
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: ${{ secrets.SMTP_SERVER_ADDRESS }}
-          server_port: ${{ secrets.SMTP_SERVER_PORT }}
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: 'Docker Image Upload Status'
+          server_address: '${{ secrets.SMTP_SERVER_ADDRESS }}'
+          server_port: '${{ secrets.SMTP_SERVER_PORT }}'
+          username: '${{ secrets.SMTP_USERNAME }}'
+          password: '${{ secrets.SMTP_PASSWORD }}'
+          subject: Docker Image Upload Status
           to: mohammedashifc@gmail.com
           from: GITHUB ACTIONS
           body: |
-            The Docker image upload was successful!
+            The Docker image upload and scan were completed.
+
+            **Image Details:**
+            - Repository: asiftest01
+            - Tag: login_demo_image
+            - Commit SHA: ${{ github.sha }}
+
+            **Scan Results:**
             [Trivy Scan Results](./trivy-results.sarif)
+
+            **Additional Information:**
+            - Workflow Run ID: ${{ github.run_id }}
+            - Workflow Run URL: ${{ github.run_url }}
+
+            Thank you!
