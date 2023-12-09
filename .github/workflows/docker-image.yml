@@ -42,7 +42,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image:${{ github.sha }}'
+          image-ref: "962686842570.dkr.ecr.us-east-1.amazonaws.com/asiftest01:login_demo_image:${{ github.sha }}"
           format: 'sarif'
           output: 'trivy-results.sarif'
         env:
@@ -67,3 +67,4 @@ jobs:
           from: GITHUB ACTIONS
           body: |
             The Docker image upload was successful!
+            [Trivy Scan Results](./trivy-results.sarif)
